@@ -1,52 +1,5 @@
 ﻿using System;
-
-// Program
-class Program
-{
-    static void Main(string[] args)
-    {
-        Console.WriteLine("== Vehicle Program ==");
-        Console.WriteLine("1. Start Car");
-        Console.WriteLine("2. Stop Car");
-        Console.WriteLine("3. Start Motorcycle");
-        Console.WriteLine("4. Stop Motorcycle");
-        Console.WriteLine("5. Exit");
-
-        IVehicle car = new Car(new CarEngine());
-        IVehicle motorcycle = new Motorcycle(new MotorcycleEngine());
-
-        bool exit = false;
-        while (!exit)
-        {
-            Console.Write("Enter your choice: ");
-            string choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    car.Start();
-                    break;
-                case "2":
-                    car.Stop();
-                    break;
-                case "3":
-                    motorcycle.Start();
-                    break;
-                case "4":
-                    motorcycle.Stop();
-                    break;
-                case "5":
-                    exit = true;
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    break;
-            }
-
-            Console.WriteLine();
-        }
-    }
-}
+using Microsoft.Extensions.DependencyInjection;
 
 // Abstraksi untuk mesin kendaraan
 public interface IEngine
@@ -83,57 +36,78 @@ public class MotorcycleEngine : IEngine
     }
 }
 
-// Abstraksi untuk kendaraan
-public interface IVehicle
+// Implementasi modul tingkat rendah untuk mesin pesawat
+public class PlaneEngine : IEngine
 {
-    void Start();
-    void Stop();
-}
-
-// Implementasi modul tingkat tinggi untuk mobil
-public class Car : IVehicle
-{
-    private readonly IEngine _engine;
-
-    public Car(IEngine engine)
-    {
-        _engine = engine;
-    }
-
     public void Start()
     {
-        _engine.Start();
-        Console.WriteLine("Car started.");
+        Console.WriteLine("Plane engine started.");
     }
 
     public void Stop()
     {
-        _engine.Stop();
-        Console.WriteLine("Car stopped.");
+        Console.WriteLine("Plane engine stopped.");
     }
 }
 
-// Implementasi modul tingkat tinggi untuk sepeda motor
-public class Motorcycle : IVehicle
+// CheckEngine untuk memeriksa keadaan mesin
+public class CheckEngine
 {
     private readonly IEngine _engine;
 
-    public Motorcycle(IEngine engine)
+    public CheckEngine(IEngine engine)
     {
         _engine = engine;
     }
 
-    public void Start()
+    public void Check()
     {
         _engine.Start();
-        Console.WriteLine("Motorcycle started.");
-    }
-
-    public void Stop()
-    {
         _engine.Stop();
-        Console.WriteLine("Motorcycle stopped.");
     }
+}
 
-    //Console.WriteLine();
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Membangun DI Container
+        var serviceProvider = new ServiceCollection()
+            .AddTransient<IEngine, CarEngine>() // Registrasi implementasi CarEngine
+            .AddTransient<IEngine, MotorcycleEngine>() // Registrasi implementasi MotorcycleEngine
+            .AddTransient<IEngine, PlaneEngine>() // Registrasi implementasi PlaneEngine
+            .BuildServiceProvider();
+
+        // Mendapatkan instance CarEngine dari DI Container
+        var carEngine = serviceProvider.GetService<IEngine>();
+
+        // Menggunakan CarEngine
+        carEngine.Start();
+        carEngine.Stop();
+
+        Console.WriteLine();
+
+        // Mendapatkan instance MotorcycleEngine dari DI Container
+        var motorcycleEngine = serviceProvider.GetService<IEngine>();
+
+        // Menggunakan MotorcycleEngine
+        motorcycleEngine.Start();
+        motorcycleEngine.Stop();
+
+        Console.WriteLine();
+
+        // Mendapatkan instance PlaneEngine dari DI Container
+        var planeEngine = serviceProvider.GetService<IEngine>();
+
+        // Menggunakan PlaneEngine
+        planeEngine.Start();
+        planeEngine.Stop();
+
+        Console.WriteLine();
+
+        // CheckEngine untuk CarEngine
+        var checkEnginePlane = serviceProvider.GetService<CheckEngine>();
+
+        Console.ReadLine();
+    }
 }

@@ -55,7 +55,7 @@
         }
 
         //OCP 
-        public abstract cl ass AVehicleSound
+        public abstract class AVehicleSound
         {
             public abstract void Sound();
     }
