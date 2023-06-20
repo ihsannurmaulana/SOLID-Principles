@@ -12,3 +12,16 @@ public class Motorcycle : Vehicle
         Console.WriteLine("Motorcycle accelerated");
     }
 }
+//Penerapan yang salah
+public class Motorcycle : Vehicle
+{
+    public override void Accelerate()
+    {
+        Console.WriteLine("Motorcycle accelerated.");
+    }
+
+    public void Wheelie()
+    {
+        Console.WriteLine("Motorcycle doing a wheelie.");
+    }
+}
