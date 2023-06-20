@@ -57,13 +57,13 @@ public class Ships : IVehicle
 
 
 // Menggunakan ISP
-public interface ILand
+public interface IVehicleLand
 {
     void Wheel();
 
 }
 
-public interface ISea
+public interface IVehicleSea
 {
     void Start();
     void Stop();
@@ -71,7 +71,7 @@ public interface ISea
 }
 
 
-public class Car1 : ILand, ISea
+public class Car1 : IVehicleLand, IVehicleSea
 {
     public void Start()
     {
@@ -91,7 +91,7 @@ public class Car1 : ILand, ISea
     }
 }
 
-public class Ships1 : ISea
+public class Ships1 : IVehicleSea
 {
     public void Start()
     {
@@ -127,14 +127,14 @@ public class Program
         Console.WriteLine();
 
         Console.WriteLine("Menggunakan ISP:");
-        ILand car1 = new Car1();
+        IVehicleLand car1 = new Car1();
         car1.Wheel();
-        ISea carAsSea = (ISea)car1;
-        carAsSea.Start();
-        carAsSea.Stop();
-        carAsSea.Brake();
+        IVehicleSea car2 = new Car1();
+        car2.Start();
+        car2.Stop();
+        car2.Brake();
 
-        ISea ships1 = new Ships1();
+        IVehicleSea ships1 = new Ships1();
         ships1.Start();
         ships1.Stop();
         ships1.Brake();
