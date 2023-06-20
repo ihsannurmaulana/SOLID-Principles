@@ -9,29 +9,25 @@ public class Program
         IVehicle car = new Car();
         car.Start();
         car.Stop();
-        car.Brake();
         car.Wheel();
 
         IVehicle ships = new Ships();
         ships.Start();
         ships.Stop();
-        ships.Brake();
         ships.Wheel();
 
         Console.WriteLine();
 
         Console.WriteLine("Menggunakan ISP:");
-        IVehicleLand car1 = new Car1();
+        IVehicleLand car1 = new LandVehicle();
         car1.Wheel();
-        IVehicleSea car2 = new Car1();
+        IVehicleSea car2 = new LandVehicle();
         car2.Start();
         car2.Stop();
-        car2.Brake();
 
-        IVehicleSea ships1 = new Ships1();
+        IVehicleSea ships1 = new LandSea();
         ships1.Start();
         ships1.Stop();
-        ships1.Brake();
 
     }
 }
@@ -40,7 +36,6 @@ public interface IVehicle
 {
     void Start();
     void Stop();
-    void Brake();
     void Wheel();
 }
 
@@ -54,10 +49,6 @@ public class Car : IVehicle
     public void Stop()
     {
         Console.WriteLine("Car stopped.");
-    }
-    public void Brake()
-    {
-        Console.WriteLine("Car braking.");
     }
     public void Wheel()
     {
@@ -75,11 +66,6 @@ public class Ships : IVehicle
     public void Stop()
     {
         Console.WriteLine("Ships stopped.");
-    }
-
-    public void Brake()
-    {
-        Console.WriteLine("Ships braking.");
     }
 
     public void Wheel()
@@ -101,10 +87,9 @@ public interface IVehicleSea
 {
     void Start();
     void Stop();
-    void Brake();
 }
 
-public class Car1 : IVehicleLand, IVehicleSea
+public class LandVehicle : IVehicleLand, IVehicleSea
 {
     public void Start()
     {
@@ -114,17 +99,13 @@ public class Car1 : IVehicleLand, IVehicleSea
     {
         Console.WriteLine("Car stopped");
     }
-    public void Brake()
-    {
-        Console.WriteLine("Car braking");
-    }
     public void Wheel()
     {
         Console.WriteLine("Car using wheel");
     }
 }
 
-public class Ships1 : IVehicleSea
+public class LandSea : IVehicleSea
 {
     public void Start()
     {
@@ -133,10 +114,6 @@ public class Ships1 : IVehicleSea
     public void Stop()
     {
         Console.WriteLine("Ship stopped");
-    }
-    public void Brake()
-    {
-        Console.WriteLine("Ship braking");
     }
 }
 
