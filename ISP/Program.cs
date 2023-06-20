@@ -1,6 +1,40 @@
 ﻿// Interface Segregation Principle (ISP)
 // Interface harus spesifik dan klien tidak boleh dipaksa bergantung pada interface yang tidak mereka gunakan.
 
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Console.WriteLine("Tanpa menggunakan ISP:");
+        IVehicle car = new Car();
+        car.Start();
+        car.Stop();
+        car.Brake();
+        car.Wheel();
+
+        IVehicle ships = new Ships();
+        ships.Start();
+        ships.Stop();
+        ships.Brake();
+        ships.Wheel();
+
+        Console.WriteLine();
+
+        Console.WriteLine("Menggunakan ISP:");
+        IVehicleLand car1 = new Car1();
+        car1.Wheel();
+        IVehicleSea car2 = new Car1();
+        car2.Start();
+        car2.Stop();
+        car2.Brake();
+
+        IVehicleSea ships1 = new Ships1();
+        ships1.Start();
+        ships1.Stop();
+        ships1.Brake();
+
+    }
+}
 // Tanpa menggunakan ISP
 public interface IVehicle
 {
@@ -70,7 +104,6 @@ public interface IVehicleSea
     void Brake();
 }
 
-
 public class Car1 : IVehicleLand, IVehicleSea
 {
     public void Start()
@@ -107,37 +140,4 @@ public class Ships1 : IVehicleSea
     }
 }
 
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        Console.WriteLine("Tanpa menggunakan ISP:");
-        IVehicle car = new Car();
-        car.Start();
-        car.Stop();
-        car.Brake();
-        car.Wheel();
 
-        IVehicle ships = new Ships();
-        ships.Start();
-        ships.Stop();
-        ships.Brake();
-        ships.Wheel();
-
-        Console.WriteLine();
-
-        Console.WriteLine("Menggunakan ISP:");
-        IVehicleLand car1 = new Car1();
-        car1.Wheel();
-        IVehicleSea car2 = new Car1();
-        car2.Start();
-        car2.Stop();
-        car2.Brake();
-
-        IVehicleSea ships1 = new Ships1();
-        ships1.Start();
-        ships1.Stop();
-        ships1.Brake();
-
-    }
-}
