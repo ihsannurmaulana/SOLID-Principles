@@ -12,7 +12,7 @@ public class Car : Vehicle
         Console.WriteLine("Car accelerated");
     }
 }
-//Penerapan yang salah
+/*//Penerapan yang salah
 public class Car : Vehicle
 {
     public override void Accelerate()
@@ -24,4 +24,4 @@ public class Car : Vehicle
     {
         Console.WriteLine("Car flying.");
     }
-}
+}*/

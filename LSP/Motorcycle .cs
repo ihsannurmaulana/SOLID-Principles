@@ -12,7 +12,7 @@ public class Motorcycle : Vehicle
         Console.WriteLine("Motorcycle accelerated");
     }
 }
-//Penerapan yang salah
+/*//Penerapan yang salah
 public class Motorcycle : Vehicle
 {
     public override void Accelerate()
@@ -25,3 +25,4 @@ public class Motorcycle : Vehicle
         Console.WriteLine("Motorcycle doing a wheelie.");
     }
 }
+*/
