@@ -1,15 +1,13 @@
-﻿using System;
+﻿// Interface Segregation Principle (ISP)
+// Interface harus spesifik dan klien tidak boleh dipaksa bergantung pada interface yang tidak mereka gunakan.
 
-// Interface Segregation Principle (ISP)
-// Interfaces should be specific and clients should not be forced to depend on interfaces they do not use.
-
-// Bad example without using ISP
+// Tanpa menggunakan ISP
 public interface IVehicle
 {
     void Start();
     void Stop();
-    void Accelerate();
     void Brake();
+    void Wheel();
 }
 
 public class Car : IVehicle
@@ -23,147 +21,89 @@ public class Car : IVehicle
     {
         Console.WriteLine("Car stopped.");
     }
-
-    public void Accelerate()
-    {
-        Console.WriteLine("Car accelerating.");
-    }
-
     public void Brake()
     {
         Console.WriteLine("Car braking.");
     }
+    public void Wheel()
+    {
+        Console.WriteLine("Car using wheel");
+    }
 }
 
-public class Motorcycle : IVehicle
+public class Ships : IVehicle
 {
     public void Start()
     {
-        Console.WriteLine("Motorcycle started.");
+        Console.WriteLine("Ships started.");
     }
 
     public void Stop()
     {
-        Console.WriteLine("Motorcycle stopped.");
-    }
-
-    public void Accelerate()
-    {
-        Console.WriteLine("Motorcycle accelerating.");
+        Console.WriteLine("Ships stopped.");
     }
 
     public void Brake()
     {
-        Console.WriteLine("Motorcycle braking.");
+        Console.WriteLine("Ships braking.");
+    }
+
+    public void Wheel()
+    {
+        Console.WriteLine("Ships do not use wheels");
     }
 }
 
-public class Driver
+
+
+// Menggunakan ISP
+public interface ILand
 {
-    private IVehicle vehicle;
+    void Wheel();
 
-    public void SetVehicle(IVehicle vehicle)
-    {
-        this.vehicle = vehicle;
-    }
-
-    public void Drive()
-    {
-        vehicle.Start();
-        vehicle.Accelerate();
-        vehicle.Brake();
-        vehicle.Stop();
-    }
 }
 
-// Good example using ISP
-public interface IStartable
+public interface ISea
 {
     void Start();
-}
-
-public interface IStoppable
-{
     void Stop();
-}
-
-public interface IAcceleratable
-{
-    void Accelerate();
-}
-
-public interface IBrakable
-{
     void Brake();
 }
 
-public class Car2 : IStartable, IStoppable, IAcceleratable, IBrakable
+
+public class Car1 : ILand, ISea
 {
     public void Start()
     {
-        Console.WriteLine("Car started.");
+        Console.WriteLine("Car started");
     }
-
     public void Stop()
     {
-        Console.WriteLine("Car stopped.");
+        Console.WriteLine("Car stopped");
     }
-
-    public void Accelerate()
-    {
-        Console.WriteLine("Car accelerating.");
-    }
-
     public void Brake()
     {
-        Console.WriteLine("Car braking.");
+        Console.WriteLine("Car braking");
+    }
+    public void Wheel()
+    {
+        Console.WriteLine("Car using wheel");
     }
 }
 
-public class Motorcycle2 : IStartable, IStoppable, IAcceleratable, IBrakable
+public class Ships1 : ISea
 {
     public void Start()
     {
-        Console.WriteLine("Motorcycle started.");
+        Console.WriteLine("Ship started");
     }
-
     public void Stop()
     {
-        Console.WriteLine("Motorcycle stopped.");
+        Console.WriteLine("Ship stopped");
     }
-
-    public void Accelerate()
-    {
-        Console.WriteLine("Motorcycle accelerating.");
-    }
-
     public void Brake()
     {
-        Console.WriteLine("Motorcycle braking.");
-    }
-}
-
-public class Driver2
-{
-    private IStartable startableVehicle;
-    private IAcceleratable acceleratableVehicle;
-    private IBrakable brakableVehicle;
-    private IStoppable stoppableVehicle;
-
-    public void SetVehicle(IStartable startableVehicle, IAcceleratable acceleratableVehicle, IBrakable brakableVehicle, IStoppable stoppableVehicle)
-    {
-        this.startableVehicle = startableVehicle;
-        this.acceleratableVehicle = acceleratableVehicle;
-        this.brakableVehicle = brakableVehicle;
-        this.stoppableVehicle = stoppableVehicle;
-    }
-
-    public void Drive()
-    {
-        startableVehicle.Start();
-        acceleratableVehicle.Accelerate();
-        brakableVehicle.Brake();
-        stoppableVehicle.Stop();
+        Console.WriteLine("Ship braking");
     }
 }
 
@@ -171,31 +111,33 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("Bad example without using ISP:");
+        Console.WriteLine("Tanpa menggunakan ISP:");
         IVehicle car = new Car();
-        Driver driver1 = new Driver();
-        driver1.SetVehicle(car);
-        driver1.Drive();
+        car.Start();
+        car.Stop();
+        car.Brake();
+        car.Wheel();
+
+        IVehicle ships = new Ships();
+        ships.Start();
+        ships.Stop();
+        ships.Brake();
+        ships.Wheel();
 
         Console.WriteLine();
 
-        IVehicle motorcycle = new Motorcycle();
-        Driver driver2 = new Driver();
-        driver2.SetVehicle(motorcycle);
-        driver2.Drive();
+        Console.WriteLine("Menggunakan ISP:");
+        ILand car1 = new Car1();
+        car1.Wheel();
+        ISea carAsSea = (ISea)car1;
+        carAsSea.Start();
+        carAsSea.Stop();
+        carAsSea.Brake();
 
-        Console.WriteLine();
-        Console.WriteLine("Good example using ISP:");
+        ISea ships1 = new Ships1();
+        ships1.Start();
+        ships1.Stop();
+        ships1.Brake();
 
-        Car2 car2 = new Car2();
-        Motorcycle2 motorcycle2 = new Motorcycle2();
-        Driver2 driver3 = new Driver2();
-        driver3.SetVehicle(car2, car2, car2, car2);
-        driver3.Drive();
-
-        Console.WriteLine();
-
-        driver3.SetVehicle(motorcycle2, motorcycle2, motorcycle2, motorcycle2);
-        driver3.Drive();
     }
 }
